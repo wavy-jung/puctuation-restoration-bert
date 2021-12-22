@@ -207,18 +207,18 @@ def train():
 
     print('Best validation Acc:', best_val_acc)
     deep_punctuation.load_state_dict(torch.load(model_save_path))
-    for loader in test_loaders:
-        precision, recall, f1, accuracy, cm = test(loader)
-        log = 'Precision: ' + str(precision) + '\n' + 'Recall: ' + str(recall) + '\n' + 'F1 score: ' + str(f1) + \
-              '\n' + 'Accuracy:' + str(accuracy) + '\n' + 'Confusion Matrix' + str(cm) + '\n'
-        print(log)
-        with open(log_path, 'a') as f:
-            f.write(log)
-        log_text = ''
-        for i in range(1, 5):
-            log_text += str(precision[i] * 100) + ' ' + str(recall[i] * 100) + ' ' + str(f1[i] * 100) + ' '
-        with open(log_path, 'a') as f:
-            f.write(log_text[:-1] + '\n\n')
+    # for loader in test_loaders:
+    #     precision, recall, f1, accuracy, cm = test(loader)
+    #     log = 'Precision: ' + str(precision) + '\n' + 'Recall: ' + str(recall) + '\n' + 'F1 score: ' + str(f1) + \
+    #           '\n' + 'Accuracy:' + str(accuracy) + '\n' + 'Confusion Matrix' + str(cm) + '\n'
+    #     print(log)
+    #     with open(log_path, 'a') as f:
+    #         f.write(log)
+    #     log_text = ''
+    #     for i in range(1, 5):
+    #         log_text += str(precision[i] * 100) + ' ' + str(recall[i] * 100) + ' ' + str(f1[i] * 100) + ' '
+    #     with open(log_path, 'a') as f:
+    #         f.write(log_text[:-1] + '\n\n')
 
 
 if __name__ == '__main__':
