@@ -12,5 +12,5 @@ python train.py \
 --augment_rate=0.1 \
 --alpha_sub=0.4 \
 --alpha_del=0.4 \
---data_path=../data/ \
+--data_path=../data/aihub/ \
 --save_path=output

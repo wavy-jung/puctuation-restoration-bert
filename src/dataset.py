@@ -17,8 +17,6 @@ def parse_data(file_path, tokenizer, sequence_len, token_style):
     punctuation_mask is used to ignore special indices like padding and intermediate sub-word token during evaluation
     """
     data_items = []
-    if not os.path.exists(file_path):
-        file_path = os.path.join("../", file_path)
     with open(file_path, 'r', encoding='utf-8') as f:
         lines = [line for line in f.read().split('\n') if line.strip()]
         idx = 0

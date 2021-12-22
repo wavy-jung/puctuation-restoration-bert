@@ -34,14 +34,11 @@ ar = args.augment_rate
 sequence_len = args.sequence_length
 aug_type = args.augment_type
 
-# Datasets
-try:
-    train_set = Dataset(os.path.join(args.data_path, 'train_dataset.txt'), tokenizer=tokenizer, sequence_len=sequence_len,
-                        token_style=token_style, is_train=True, augment_rate=ar, augment_type=aug_type)
-    val_set = Dataset(os.path.join(args.data_path, 'validation_dataset.txt'), tokenizer=tokenizer, sequence_len=sequence_len,
-                      token_style=token_style, is_train=False)
-except:
-    raise ValueError('Incorrect language argument for Dataset')
+
+train_set = Dataset(os.path.join(args.data_path, 'train_dataset.txt'), tokenizer=tokenizer, sequence_len=sequence_len,
+                    token_style=token_style, is_train=True, augment_rate=ar, augment_type=aug_type)
+val_set = Dataset(os.path.join(args.data_path, 'validation_dataset.txt'), tokenizer=tokenizer, sequence_len=sequence_len,
+                    token_style=token_style, is_train=False)
 
 # Data Loaders
 data_loader_params = {
