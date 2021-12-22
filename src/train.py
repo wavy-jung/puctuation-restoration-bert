@@ -4,7 +4,8 @@ import torch.nn as nn
 import numpy as np
 from torch.utils import data
 import torch.multiprocessing
-from tqdm import tqdm
+from tqdm.auto import tqdm
+import time
 
 from argparser import parse_arguments
 from dataset import Dataset
@@ -34,17 +35,12 @@ sequence_len = args.sequence_length
 aug_type = args.augment_type
 
 # Datasets
-if args.language == 'english':
+try:
     train_set = Dataset(os.path.join(args.data_path, 'train_dataset.txt'), tokenizer=tokenizer, sequence_len=sequence_len,
                         token_style=token_style, is_train=True, augment_rate=ar, augment_type=aug_type)
     val_set = Dataset(os.path.join(args.data_path, 'validation_dataset.txt'), tokenizer=tokenizer, sequence_len=sequence_len,
                       token_style=token_style, is_train=False)
-    test_set_ref = Dataset(os.path.join(args.data_path, 'train_dataset.txt'), tokenizer=tokenizer, sequence_len=sequence_len,
-                           token_style=token_style, is_train=False)
-    test_set_asr = Dataset(os.path.join(args.data_path, 'validation_dataset.txt'), tokenizer=tokenizer, sequence_len=sequence_len,
-                           token_style=token_style, is_train=False)
-    test_set = [val_set, test_set_ref, test_set_asr]
-else:
+except:
     raise ValueError('Incorrect language argument for Dataset')
 
 # Data Loaders
@@ -55,7 +51,6 @@ data_loader_params = {
 }
 train_loader = torch.utils.data.DataLoader(train_set, **data_loader_params)
 val_loader = torch.utils.data.DataLoader(val_set, **data_loader_params)
-test_loaders = [torch.utils.data.DataLoader(x, **data_loader_params) for x in test_set]
 
 # logs
 os.makedirs(args.save_path, exist_ok=True)
@@ -175,8 +170,6 @@ def train():
             y_mask = y_mask.view(-1)
             if args.use_crf:
                 loss = deep_punctuation.log_likelihood(x, att, y)
-                # y_predict = deep_punctuation(x, att, y)
-                # y_predict = y_predict.view(-1)
                 y = y.view(-1)
             else:
                 y_predict = deep_punctuation(x, att)

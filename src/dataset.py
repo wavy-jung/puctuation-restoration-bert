@@ -3,6 +3,7 @@ from config import *
 from augmentation import *
 import numpy as np
 import os
+from tqdm.auto import tqdm
 
 
 def parse_data(file_path, tokenizer, sequence_len, token_style):

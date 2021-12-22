@@ -4,7 +4,6 @@ python train.py \
 --pretrained_model=klue/roberta-small \
 --freeze_bert=False \
 --lstm_dim=-1 \
---language=english \
 --seed=1 \
 --lr=5e-6 \
 --epoch=10 \
@@ -13,5 +12,5 @@ python train.py \
 --augment_rate=0.1 \
 --alpha_sub=0.4 \
 --alpha_del=0.4 \
---data_path=/opt/ml/ \
---save_path=out
+--data_path=../data/ \
+--save_path=output

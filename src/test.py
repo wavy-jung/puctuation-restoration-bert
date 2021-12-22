@@ -12,14 +12,11 @@ from config import *
 parser = argparse.ArgumentParser(description='Punctuation restoration test')
 parser.add_argument('--cuda', default=True, type=lambda x: (str(x).lower() == 'true'), help='use cuda if available')
 parser.add_argument('--pretrained_model', default='klue/roberta-small', type=str, help='pretrained language model')
-parser.add_argument('--lstm_dim', default=-1, type=int,
-                    help='hidden dimension in LSTM layer, if -1 is set equal to hidden dimension in language model')
-parser.add_argument('--use_crf', default=False, type=lambda x: (str(x).lower() == 'true'),
-                    help='whether to use CRF layer or not')
+parser.add_argument('--lstm_dim', default=-1, type=int, help='hidden dimension in LSTM layer, if -1 is set equal to hidden dimension in language model')
+parser.add_argument('--use_crf', default=False, type=lambda x: (str(x).lower() == 'true'), help='whether to use CRF layer or not')
 parser.add_argument('--data_path', default='../data/', type=str, help='path to test datasets')
 parser.add_argument('--weight_path', default='out/weights.pt', type=str, help='model weight path')
-parser.add_argument('--sequence_length', default=256, type=int,
-                    help='sequence length to use when preparing dataset (default 256)')
+parser.add_argument('--sequence_length', default=256, type=int, help='sequence length to use when preparing dataset (default 256)')
 parser.add_argument('--batch_size', default=8, type=int, help='batch size (default: 8)')
 parser.add_argument('--save_path', default='out/', type=str, help='model and log save directory')
 

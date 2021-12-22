@@ -4,20 +4,17 @@ import torch
 import argparse
 from model import DeepPunctuation, DeepPunctuationCRF
 from config import *
+import time
 
 parser = argparse.ArgumentParser(description='Punctuation restoration inference on text file')
 parser.add_argument('--cuda', default=True, type=lambda x: (str(x).lower() == 'true'), help='use cuda if available')
 parser.add_argument('--pretrained_model', default='klue/roberta-small', type=str, help='pretrained language model')
-parser.add_argument('--lstm_dim', default=-1, type=int,
-                    help='hidden dimension in LSTM layer, if -1 is set equal to hidden dimension in language model')
-parser.add_argument('--use_crf', default=False, type=lambda x: (str(x).lower() == 'true'),
-                    help='whether to use CRF layer or not')
-parser.add_argument('--language', default='en', type=str, help='language English (en) oe Bangla (bn)')
-parser.add_argument('--in_file', default='../data/test_en.txt', type=str, help='path to inference file')
-parser.add_argument('--weight_path', default='./out/weights.pt', type=str, help='model weight path')
-parser.add_argument('--sequence_length', default=256, type=int,
-                    help='sequence length to use when preparing dataset (default 256)')
-parser.add_argument('--out_file', default='../data/test_en_out.txt', type=str, help='output file location')
+parser.add_argument('--lstm_dim', default=-1, type=int, help='hidden dimension in LSTM layer, if -1 is set equal to hidden dimension in language model')
+parser.add_argument('--use_crf', default=False, type=lambda x: (str(x).lower() == 'true'), help='whether to use CRF layer or not')
+parser.add_argument('--in_file', default='../data/example_input.txt', type=str, help='path to inference file')
+parser.add_argument('--weight_path', default='./output/weights.pt', type=str, help='model weight path')
+parser.add_argument('--sequence_length', default=256, type=int, help='sequence length to use when preparing dataset (default 256)')
+parser.add_argument('--out_file', default='../data/example_output.txt', type=str, help='output file location')
 
 args = parser.parse_args()
 
@@ -41,19 +38,20 @@ def inference():
     deep_punctuation.load_state_dict(torch.load(model_save_path))
     deep_punctuation.eval()
 
+    start = time.time()
     with open(args.in_file, 'r', encoding='utf-8') as f:
         text = f.read()
     text = re.sub(r"[,:\-–.!;?]", '', text)
     words_original_case = text.split()
     words = text.lower().split()
+    end = time.time()
+    print(f"{(end-start)/1000} seconds loading file")
 
     word_pos = 0
     sequence_len = args.sequence_length
     result = ""
     decode_idx = 0
     punctuation_map = {0: '', 1: ',', 2: '.', 3: '?'}
-    if args.language != 'en':
-        punctuation_map[2] = '।'
 
     while word_pos < len(words):
         x = [TOKEN_IDX[token_style]['START_SEQ']]

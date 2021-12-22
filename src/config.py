@@ -24,12 +24,6 @@ TOKEN_IDX = {
         'END_SEQ': 2,
         'UNK': 3
     },
-    'albert': {
-        'START_SEQ': 2,
-        'PAD': 0,
-        'END_SEQ': 3,
-        'UNK': 1
-    },
 }
 
 # 'O' -> No punctuation
